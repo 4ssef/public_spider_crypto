@@ -1,0 +1,6 @@
+This program saves .html files of emails that notify when a Binance transaction
+was made (deposits); then extracts the transaction date (UTC) and cryptocurrency quantity
+out of the .html file, gets exact cryptocurrency price at transaction date
+and writes all the data in a .csv file, which also makes a copy of it in a cloud
+storage application such as Google Drive, Microsoft OneDrive, Dropbox, etc., in order
+to have access anywhere at anytime.

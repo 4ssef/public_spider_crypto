@@ -1,0 +1,11 @@
+Day 30: Save Emails Locally in Python Programming
+	https://www.youtube.com/watch?v=Jt8LizzxkPU&ab_channel=PythonCodex
+
+Get latest bitcoin price:
+	https://www.youtube.com/watch?v=opFegHZ7pUU&ab_channel=ChadThackray
+
+Get Historical Bars from Binance API using Python:
+	https://www.youtube.com/watch?v=kolnmZTQev0&ab_channel=QuantNomad
+
+Excel Import CoinMarketCap API Data with Query: (latest bitcoin price on Power Bi)
+	https://www.youtube.com/watch?v=7vralSh_f6Q&ab_channel=SyntaxByte
