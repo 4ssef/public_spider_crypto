@@ -104,7 +104,7 @@ def createDB(path_of_folder: str, number_of_files: int, file_to_edit: str):
 		price = get_bitcoin_price(dt.datetime(year, month, day, hour, minute)) # BTC price at transaction date
 		
 		file_to_edit.write(idTransaction + ";" + str(transactionDate) + ";" + 
-				btcQuantity[0] + ";" + price + "\n")
+				btcQty[0] + ";" + price + "\n")
 	
 	# writes and repeats for n number of files in path_of_folder
 	for i in range(0, number_of_files):
@@ -112,16 +112,8 @@ def createDB(path_of_folder: str, number_of_files: int, file_to_edit: str):
 		line = find_str_in_file(filePath, "received") # returns line number which matched with given string ("received")
 		lineText = linecache.getline(filePath, line) # returns text of given line
 		
-		if len(lineText) > 240 and len(lineText) < 250:
-			shortLine = right(lineText, 20) # reduces line to 20 characters
-			btcQuantity = findall("\d+\.\d+", shortLine) # returns float of given line (crypto quantity)
-			write_content_on_file(file_to_edit)
-
-		elif len(lineText) > 1000:
-			shortLine = right(lineText, 700)
-			shorterLine = left(shortLine, 19)
-			btcQuantity = findall("\d+\.\d+", shorterLine)
-			write_content_on_file(file_to_edit)
+		btcQty = findall("\d+\.\d+", lineText) # returns float of given line (crypto quantity)
+		write_content_on_file(file_to_edit) # writes on file
 			
 	file_to_edit.close()
 
