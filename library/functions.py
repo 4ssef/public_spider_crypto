@@ -120,7 +120,7 @@ def createDB(path_of_folder: str, number_of_files: int, file_to_edit: str):
 # cleans email subject of invalid characters in order to name files in Windows
 def clean_email_subject(subject_of_email: str):
 	shortEmail = right(subject_of_email, 24)
-	shortEmail = left(shortEmail, 19) # limpia el "(UTC)" del asunto
+	shortEmail = left(shortEmail, 19) # removes "UTC" out of subject
 	cleanEmail = shortEmail.replace(":", ",")
 	return cleanEmail.replace(" ", "_")
 
