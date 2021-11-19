@@ -55,14 +55,14 @@ def saveEmails(path_to_save: str):
 		with open(os.path.join(path_to_save, filename), 'wb') as fp:
 			fp.write(part.get_payload(decode = True))
 
-# returns BTCUSDT price at given date/time
-def get_bitcoin_price(date_of_transaction):
+# returns crypto price at given date/time
+def get_crypto_price(symbol_of_crypto: str, date_of_transaction):
 	# date_of_transaction parameter must contain yyyy MM dd hh mm (not ss)
 	# binance api documentation: https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md#klinecandlestick-data
 	url = 'https://api.binance.com/api/v3/klines' # url API
 	date = date_of_transaction.timestamp() * 1000 # date on POSIX format (epoch)
 
-	symbol = 'BTCUSDT' # cryptocurrency symbol on Binance (not necessarily BTCUSDT, could be any crypto)
+	symbol = symbol_of_crypto.upper() + "USDT" # cryptocurrency symbol on Binance
 	interval = '1m' # transaction's granularity (see documentation)
 	startTime = str(int(date)) # start date
 	endTime = str(int(date + 1)) # end date (start date + 1 nanosecond) (basically price of startTime)
@@ -101,10 +101,10 @@ def createDB(path_of_folder: str, number_of_files: int, file_to_edit: str):
 		minute = int(left(right(list_of_files[i], 10), 2)) # mm
 		second = int(left(right(list_of_files[i], 7), 2)) # ss
 		transactionDate = dt.datetime(year, month, day, hour, minute, second) # transaction date (UTC)
-		price = get_bitcoin_price(dt.datetime(year, month, day, hour, minute)) # BTC price at transaction date
+		price = get_crypto_price("CRYPTOSYMBOL", dt.datetime(year, month, day, hour, minute)) # chosen crypto price at transaction date
 		
 		file_to_edit.write(idTransaction + ";" + str(transactionDate) + ";" + 
-				btcQty[0] + ";" + price + "\n")
+				cryptoQty[0] + ";" + price + "\n")
 	
 	# writes and repeats for n number of files in path_of_folder
 	for i in range(0, number_of_files):
@@ -112,7 +112,7 @@ def createDB(path_of_folder: str, number_of_files: int, file_to_edit: str):
 		line = find_str_in_file(filePath, "received") # returns line number which matched with given string ("received")
 		lineText = linecache.getline(filePath, line) # returns text of given line
 		
-		btcQty = findall("\d+\.\d+", lineText) # returns float of given line (crypto quantity)
+		cryptoQty = findall("\d+\.\d+", lineText) # returns float of given line (crypto quantity)
 		write_content_on_file(file_to_edit) # writes on file
 			
 	file_to_edit.close()
@@ -140,7 +140,7 @@ def find_str_in_file(path_to_file_to_find: str, string_to_find: str):
 
 # writes headers in .csv file
 def writeHeader(file):
-	file.write("idTransaction;dateTransaction(UTC);cntBTC;priceBTC" + "\n")
+	file.write("idTransaction;dateTransaction(UTC);qtyCrypto;priceCrypto" + "\n")
 
 # returns last n characters (right to left)
 def right(string: str, n):
@@ -149,3 +149,9 @@ def right(string: str, n):
 # returns first n characters (left to right)
 def left(string: str, n):
 	return string[:n]
+
+# manually writes transactions in .csv file using (symbol, qty and transaction date)
+def create_transactions_DB(symbol_of_crypto, crypto_qty, date, file_to_edit: str):
+	file_to_edit.write(symbol_of_crypto.upper() + ";" + str(crypto_qty) + ";" + str(date) + ";" + 
+				get_crypto_price(symbol_of_crypto, date) + "\n")
+	file_to_edit.close()
